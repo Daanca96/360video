@@ -1,0 +1,94 @@
+<!DOCTYPE html> <!-- https://www.youtube.com/watch?v=GQ_t9bvdnNA 
+                     https://medium.com/samsung-internet-dev/crea-tu-primer-pwa-paso-a-paso-3bc584e3d084
+                     -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>360&deg; Image Gallery</title>
+    <meta name="description" content="360&deg; Image Gallery - A-Frame">
+    <link rel="manifest" href="./manifest.json">
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe-event-set-component.min.js"></script>
+    <script src="js/aframe-layout-component.min.js"></script>
+    <script src="js/aframe-template-component.min.js"></script>
+    <script src="js/aframe-proxy-event-component.min.js"></script>
+
+    <script src="aframe-master.js"></script>
+    <script src="play-on-click.js"></script>
+    <script src="hide-on-play.js"></script>
+
+    <!-- Image link template to be reused. -->
+    <script id="link" type="text/html">
+      <a-entity class="link"
+        geometry="primitive: plane; height: 1; width: 1"
+        material="shader: flat; src: ${thumb}"
+        event-set__mouseenter="scale: 1.2 1.2 1"
+        event-set__mouseleave="scale: 1 1 1"
+        event-set__click="_target: #image-360; _delay: 300; material.src: ${src}"
+        proxy-event="event: click; to: #image-360; as: fade"
+        sound="on: click; src: #click-sound"></a-entity>
+    </script>
+  
+
+    <script type="text/javascript">
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+      }
+    </script>
+
+  </head>
+  <body>
+    <a-scene>
+
+      <a-assets>
+
+        <img id="2-thumb" crossorigin="anonymous" src="img/m2.jpg">
+        <img id="2" crossorigin="anonymous" src="img/2.jpg">
+
+        <video id="videoFireworks" preload="auto"
+               src="360.mp4"
+               width="4096" height="2048" autoplay loop="true"
+               crossOrigin="anonymous" muted></video>
+        <video id="video2" preload="auto"
+               src="video.mp4"
+               width="160" height="90" autoplay loop="true"
+               crossOrigin="anonymous" muted></video>
+      </a-assets>
+      
+            <!-- 360-degree image. -->
+      <a-sky id="image-360" radius="10" src="#videoFireworks"
+             animation__fade="property: components.material.material.color; type: color; from: #FFF; to: #000; dur: 300; startEvents: fade"
+             animation__fadeback="property: components.material.material.color; type: color; from: #000; to: #FFF; dur: 300; startEvents: animationcomplete__fade"></a-sky>
+
+      <!-- Image links.        horizontal-vertical-fondo -->
+      <a-entity id="links" layout="type: line; margin: 1.5" position="0 0 0">
+
+      <a-entity material="shader: flat; src: #videoFireworks"
+                geometry="primitive: plane; width: 400; height: 300"
+                position="0 0 -200"
+                rotation="0 0 0"
+                play-on-click
+                visible="false">
+      </a-entity>
+
+      <a-plane position="0 0 0" rotation="-90 0 0" width="5" height="5" color="black"></a-plane>
+
+ </a-entity>
+
+      <!-- Camera + cursor. -->
+      <a-entity camera look-controls>
+        <a-cursor
+          id="cursor"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__mouseenter="_event: mouseenter; color: springgreen"
+          event-set__mouseleave="_event: mouseleave; color: red"
+          raycaster="objects: .link">
+
+        </a-cursor>
+      </a-entity>
+
+    </a-scene>
+
+  </body>
+</html>
