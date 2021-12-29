@@ -16,6 +16,7 @@
     <script src="aframe-master.js"></script>
     <script src="play-on-click.js"></script>
     <script src="hide-on-play.js"></script>
+    <script src="dani.js"></script>
 
     <!-- Image link template to be reused. -->
     <script id="link" type="text/html">
@@ -36,6 +37,22 @@
       }
     </script>
 
+
+
+    <script type="text/javascript">
+
+   function rec() {
+
+  var videoEl = this.el.getAttribute('material').src;
+        const music = new Video('video.mp4');
+   var x=0;
+    music.play();          // Reproduce desde el inicio
+    videoEl.play();
+    }
+    </script>
+
+
+
   </head>
   <body>
     <a-scene>
@@ -47,7 +64,7 @@
 
         <video id="videoFireworks" preload="auto"
                src="360.mp4"
-               width="4096" height="2048" autoplay loop="true"
+               width="4096" height="2048" autoplay loop="true"  
                crossOrigin="anonymous" muted></video>
         <video id="video2" preload="auto"
                src="video.mp4"
@@ -67,11 +84,11 @@
                 geometry="primitive: plane; width: 400; height: 300"
                 position="0 0 -200"
                 rotation="0 0 0"
-                play-on-click
+                dani
                 visible="false">
       </a-entity>
 
-     
+      <!--<a-plane position="0 0 0" rotation="-90 0 0" width="5" height="5" color="black"></a-plane>-->
 
  </a-entity>
 
